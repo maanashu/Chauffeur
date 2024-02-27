@@ -1,25 +1,37 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   FlatList,
   Image,
   ImageBackground,
+  StatusBar,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {ScreenWrapper} from '../../component/ScreenWrapper';
 import LinearGradient from 'react-native-linear-gradient';
-import {Airplane, City, HomeBanner, Linear, Menu} from '../../assets';
+import {
+  Airplane,
+  City,
+  HomeBackGround,
+  HomeBanner,
+  Linear,
+  Menu,
+} from '../../assets';
 import {ms} from 'react-native-size-matters';
 import {COLORS} from '../../theme';
 import {Spacer} from '../../assets/Spacer';
+import {useIsFocused} from '@react-navigation/native';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
 export function Home() {
+  const isFocused = useIsFocused();
   const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const [activeTab, setActiveTab] = useState(0);
 
   const rideSelectedWay = [
     {
@@ -44,13 +56,17 @@ export function Home() {
 
   const renderItem = ({item, index}) => (
     <View style={{flexDirection: 'row'}}>
-      <View
-        style={{
-          backgroundColor: index !== selectedIndex ? '#727272' : 'transparent',
-          width: ms(2),
-          marginVertical: ms(4),
-        }}
-      />
+      {selectedIndex == 2 && (
+        <View
+          style={{
+            backgroundColor:
+              index === selectedIndex || index == 0 ? 'transparent' : '#727272',
+            width: ms(2),
+            marginVertical: ms(4),
+          }}
+        />
+      )}
+
       <TouchableOpacity
         style={{
           width: width / 3 - ms(25),
@@ -80,27 +96,40 @@ export function Home() {
           {item?.title}
         </Text>
       </TouchableOpacity>
-      <View
-        style={{
-          backgroundColor:
-            index !== selectedIndex && index > 2 && index
-              ? '#727272'
-              : 'transparent',
-          width: ms(2),
-          marginVertical: ms(4),
-        }}
-      />
+
+      {selectedIndex == 0 && (
+        <View
+          style={{
+            backgroundColor:
+              index === selectedIndex || index == 2 ? 'transparent' : '#727272',
+            width: ms(2),
+            marginVertical: ms(4),
+          }}
+        />
+      )}
     </View>
   );
+
+  useEffect(() => {
+    if (isFocused) {
+      setTimeout(() => {
+        StatusBar.setBackgroundColor('#292929', true);
+        StatusBar.setBarStyle('light-content');
+      }, 300);
+    }
+  }, [isFocused]);
+
   return (
     <ScreenWrapper>
-      <View style={{backgroundColor: COLORS.black, flex: 1}}>
+      <ImageBackground
+        source={HomeBackGround}
+        style={{width: width, height: height, resizeMode: 'contain'}}>
         <ImageBackground
           source={HomeBanner}
           style={{width: width, height: ms(300), resizeMode: 'contain'}}>
           <ImageBackground
             source={Linear}
-            style={{width: width, height: ms(300), resizeMode: 'contain'}}>
+            style={{width: width, height: ms(305), resizeMode: 'contain'}}>
             <TouchableOpacity
               style={{
                 alignSelf: 'flex-end',
@@ -151,7 +180,57 @@ export function Home() {
             </View>
           </ImageBackground>
         </ImageBackground>
-      </View>
+
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: COLORS.white,
+            marginHorizontal: ms(25),
+            marginVertical: ms(10),
+            borderRadius: ms(30),
+            marginBottom: ms(25),
+            padding: ms(20),
+          }}>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                padding: ms(10),
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderBottomWidth: activeTab === 0 ? ms(3) : 0,
+              }}
+              onPress={() => setActiveTab(0)}>
+              <Text
+                style={{
+                  fontSize: ms(16),
+                  color: COLORS.black,
+                  fontWeight: activeTab === 0 ? '800' : '500',
+                }}>
+                {'One Way'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                padding: ms(10),
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderBottomWidth: activeTab === 1 ? ms(3) : 0,
+              }}
+              onPress={() => setActiveTab(1)}>
+              <Text
+                style={{
+                  fontSize: ms(16),
+                  color: COLORS.black,
+                  fontWeight: activeTab === 1 ? '800' : '500',
+                }}>
+                {'By Hour'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ImageBackground>
     </ScreenWrapper>
   );
 }
