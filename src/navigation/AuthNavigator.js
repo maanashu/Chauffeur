@@ -4,6 +4,7 @@ import {NAVIGATION} from '../constants';
 import {
   CreateNewPassword,
   ForgotPassword,
+  Home,
   Login,
   OnBoarding,
   RecoverViaEmail,
@@ -61,6 +62,11 @@ export function AuthNavigator() {
       <Stack.Screen
         component={VerifyPhoneNumber}
         name={NAVIGATION.verifyPhoneNumber}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        component={Home}
+        name={NAVIGATION.home}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

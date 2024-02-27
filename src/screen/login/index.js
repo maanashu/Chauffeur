@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
-  ImageBackground,
   Platform,
-  SafeAreaView,
+  StatusBar,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {ScreenWrapper} from '../../component/ScreenWrapper';
 import styles from './styles';
 import {BottomBackground, Logo} from '../../assets';
 import {ms} from 'react-native-size-matters';
@@ -16,7 +16,11 @@ import LoginComponent from '../../component/LoginComponent';
 import SignUpComponent from '../../component/SignUpComponent';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
+import {useIsFocused} from '@react-navigation/native';
+import {COLORS} from '../../theme';
+
 export function Login() {
+  const isFocused = useIsFocused();
   const [activeTab, setActiveTab] = useState(0);
 
   const loginButton = {
@@ -32,11 +36,22 @@ export function Login() {
     color: activeTab == 1 ? '#fff' : '#0F0F0F',
   };
 
+  useEffect(() => {
+    if (isFocused) {
+      setTimeout(() => {
+        StatusBar.setBackgroundColor(COLORS.sky_grey, true);
+        StatusBar.setBarStyle('dark-content');
+      }, 300);
+    }
+  }, [isFocused]);
+
   return (
-    <View style={styles.container}>
+    <ScreenWrapper>
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{flexGrow: 1}}>
+        contentContainerStyle={{flexGrow: 1}}
+        // keyboardVerticalOffset={statusBarHeight}
+      >
         <View style={{flex: 0.3}}>
           <Spacer space={ms(25)} />
           <Image source={Logo} style={styles.logoImage} />
@@ -73,6 +88,6 @@ export function Login() {
           />
         </View>
       </KeyboardAwareScrollView>
-    </View>
+    </ScreenWrapper>
   );
 }

@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerImageBackGround: {
-    height: ms(440),
+    height: ms(400),
     width: width,
   },
   subTitle: {
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   backButtonView: {
     position: 'absolute',
-    top: ms(40),
+    top: ms(20),
     left: ms(10),
     zIndex: 1,
   },

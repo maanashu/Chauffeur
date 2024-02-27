@@ -73,7 +73,6 @@ export function VerifyPhoneNumber() {
                 marginLeft: ms(10),
                 color: '#828282',
 
-                
                 fontSize: ms(14),
                 padding: 0,
               }}

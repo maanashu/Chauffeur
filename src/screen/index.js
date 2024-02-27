@@ -7,4 +7,4 @@ export {VerifyByPhoneCode} from '../screen/forgotPassword/component/VerifyByPhon
 export {VerifyByEmailCode} from '../screen/forgotPassword/component/VerifyByEmailCode';
 export {CreateNewPassword} from '../screen/forgotPassword/component/CreateNewPassword';
 export {VerifyPhoneNumber} from '../screen/login/Component/VerifyPhoneNumber';
-
+export {Home} from '../screen/home';

@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   ImageBackground,
+  StatusBar,
   Text,
   TouchableOpacity,
   View,
@@ -25,8 +26,11 @@ import styles from './styles';
 import {NAVIGATION} from '../../constants';
 import {navigate} from '../../navigation/NavigationRef';
 import {ScreenWrapper} from '../../component/ScreenWrapper';
+import {useIsFocused} from '@react-navigation/native';
+import { COLORS } from '../../theme';
 
 export function OnBoarding() {
+  const isFocused = useIsFocused();
   const [imageIndex, setImageIndex] = useState(0);
 
   const images = [Onboarding_1, CityTrasport, AirportTransfers];
@@ -55,12 +59,21 @@ export function OnBoarding() {
     RightCarBottomBackground,
   ];
 
+  useEffect(() => {
+    if (isFocused) {
+      setTimeout(() => {
+        StatusBar.setBackgroundColor(COLORS.sky_grey, true);
+        StatusBar.setBarStyle('dark-content');
+      }, 300);
+    }
+  }, [isFocused]);
+  
   return (
     <ScreenWrapper>
       <ImageBackground
         source={images[imageIndex]}
         style={styles.headerImageBackGround}
-        resizeMode="cover">
+        resizeMode="stretch">
         {imageIndex > 0 && (
           <TouchableOpacity style={styles.backButtonView} onPress={onBackPress}>
             <Image source={LeftArrow} style={styles.backIcon} />

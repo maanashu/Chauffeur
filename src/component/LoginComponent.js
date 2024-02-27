@@ -41,7 +41,7 @@ const LoginComponent = () => {
       </TouchableOpacity>
       <Spacer space={ms(10)} />
 
-      <CustomButton title={'Login'} />
+      <CustomButton title={'Login'} onPress={() => navigate(NAVIGATION.home)} />
       <Spacer space={ms(15)} />
 
       <View style={styles.sepratorLoginView}>
