@@ -36,3 +36,4 @@ export {default as CrossBlack} from './/images/CrossBlack.png';
 export {default as City} from './/images/City.png';
 export {default as Calendar} from './/images/Calendar.png';
 export {default as HomeBackGround} from './/images/Home.png';
+export {default as VerticalLineSeprator} from './/images/VerticalLineSeprator.png';

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {
-  Dimensions,
   FlatList,
   Image,
   ImageBackground,
@@ -10,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import {ScreenWrapper} from '../../component/ScreenWrapper';
-import LinearGradient from 'react-native-linear-gradient';
+
 import {
   Airplane,
   City,
@@ -20,18 +19,23 @@ import {
   Menu,
 } from '../../assets';
 import {ms} from 'react-native-size-matters';
-import {COLORS} from '../../theme';
+
 import {Spacer} from '../../assets/Spacer';
 import {useIsFocused} from '@react-navigation/native';
-
-const height = Dimensions.get('window').height;
-const width = Dimensions.get('window').width;
+import {styles} from './styles';
+import OneWayPickDropPoint from './component/OneWayPickDropPoint';
 
 export function Home() {
   const isFocused = useIsFocused();
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const [activeTab, setActiveTab] = useState(0);
+
+  const oneWayView = {borderBottomWidth: activeTab === 0 ? ms(3) : 0};
+  const byHourView = {borderBottomWidth: activeTab === 1 ? ms(3) : 0};
+
+  const oneWayText = {fontWeight: activeTab === 0 ? '800' : '500'};
+  const byHourText = {fontWeight: activeTab === 1 ? '800' : '500'};
 
   const rideSelectedWay = [
     {
@@ -55,56 +59,46 @@ export function Home() {
   ];
 
   const renderItem = ({item, index}) => (
-    <View style={{flexDirection: 'row'}}>
+    <View style={styles.flexDirectionRow}>
       {selectedIndex == 2 && (
         <View
-          style={{
-            backgroundColor:
-              index === selectedIndex || index == 0 ? 'transparent' : '#727272',
-            width: ms(2),
-            marginVertical: ms(4),
-          }}
+          style={[
+            styles.selectedSeprator,
+            {
+              backgroundColor:
+                index === selectedIndex || index == 0
+                  ? 'transparent'
+                  : '#727272',
+            },
+          ]}
         />
       )}
 
       <TouchableOpacity
-        style={{
-          width: width / 3 - ms(25),
-          backgroundColor: index == selectedIndex ? '#727272' : 'transparent',
-          // marginHorizontal: ms(3.5),
-          height: ms(75),
-          overflow: 'hidden',
-          borderRadius: ms(15),
-          alignItems: 'center',
-          paddingHorizontal: ms(10),
-          alignSelf: 'center',
-          justifyContent: 'center',
-        }}
+        style={[
+          styles.transferView,
+          {backgroundColor: index == selectedIndex ? '#727272' : 'transparent'},
+        ]}
         onPress={item?.onPress}>
         <Image
           source={item?.image}
           resizeMode="contain"
-          style={{height: ms(20), width: ms(20)}}
+          style={styles.transportIcon}
         />
-        <Text
-          style={{
-            fontSize: ms(14),
-            fontWeight: 'bold',
-            color: COLORS.white,
-            textAlign: 'center',
-          }}>
-          {item?.title}
-        </Text>
+        <Text style={styles.rideTransferTitle}>{item?.title}</Text>
       </TouchableOpacity>
 
       {selectedIndex == 0 && (
         <View
-          style={{
-            backgroundColor:
-              index === selectedIndex || index == 2 ? 'transparent' : '#727272',
-            width: ms(2),
-            marginVertical: ms(4),
-          }}
+          style={[
+            styles.selectedSeprator,
+            {
+              backgroundColor:
+                index === selectedIndex || index == 2
+                  ? 'transparent'
+                  : '#727272',
+            },
+          ]}
         />
       )}
     </View>
@@ -123,44 +117,16 @@ export function Home() {
     <ScreenWrapper>
       <ImageBackground
         source={HomeBackGround}
-        style={{width: width, height: height, resizeMode: 'contain'}}>
-        <ImageBackground
-          source={HomeBanner}
-          style={{width: width, height: ms(300), resizeMode: 'contain'}}>
+        style={styles.mainBackgroundImage}>
+        <ImageBackground source={HomeBanner} style={styles.headerBannerImage}>
           <ImageBackground
             source={Linear}
-            style={{width: width, height: ms(305), resizeMode: 'contain'}}>
-            <TouchableOpacity
-              style={{
-                alignSelf: 'flex-end',
-                height: ms(47),
-                width: ms(47),
-                marginTop: ms(20),
-                borderWidth: ms(1),
-                justifyContent: 'center',
-                borderRadius: ms(14),
-                alignItems: 'center',
-                marginRight: ms(15),
-                backgroundColor: 'rgba(255, 255, 255, 0.3)',
-              }}>
-              <Image source={Menu} style={{width: ms(22), height: ms(15)}} />
+            style={styles.opacityBackgroundImage}>
+            <TouchableOpacity style={styles.menuView}>
+              <Image source={Menu} style={styles.menuIcon} />
             </TouchableOpacity>
-            <View
-              style={{
-                position: 'absolute',
-                bottom: ms(20),
-                left: 0,
-                right: 0,
-              }}>
-              <Text
-                style={{
-                  fontSize: ms(22),
-                  fontWeight: 'bold',
-                  color: COLORS.white,
-                  textAlign: 'center',
-                }}>
-                {'BOOK A RIDE'}
-              </Text>
+            <View style={styles.rideView}>
+              <Text style={styles.rideText}>{'BOOK A RIDE'}</Text>
 
               <Spacer space={ms(10)} />
 
@@ -168,67 +134,27 @@ export function Home() {
                 data={rideSelectedWay}
                 numColumns={3}
                 renderItem={renderItem}
-                style={{
-                  borderColor: '#727272',
-                  borderRadius: ms(14),
-                  borderWidth: 1,
-                  marginHorizontal: ms(25),
-                  padding: ms(3),
-                  alignSelf: 'center',
-                }}
+                style={styles.selectionStyle}
               />
             </View>
           </ImageBackground>
         </ImageBackground>
 
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: COLORS.white,
-            marginHorizontal: ms(25),
-            marginVertical: ms(10),
-            borderRadius: ms(30),
-            marginBottom: ms(25),
-            padding: ms(20),
-          }}>
-          <View style={{flexDirection: 'row'}}>
+        <View style={styles.bottomView}>
+          <View style={styles.flexDirectionRow}>
             <TouchableOpacity
-              style={{
-                flex: 1,
-                padding: ms(10),
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderBottomWidth: activeTab === 0 ? ms(3) : 0,
-              }}
+              style={[styles.tabView, oneWayView]}
               onPress={() => setActiveTab(0)}>
-              <Text
-                style={{
-                  fontSize: ms(16),
-                  color: COLORS.black,
-                  fontWeight: activeTab === 0 ? '800' : '500',
-                }}>
-                {'One Way'}
-              </Text>
+              <Text style={[styles.title, oneWayText]}>{'One Way'}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={{
-                flex: 1,
-                padding: ms(10),
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderBottomWidth: activeTab === 1 ? ms(3) : 0,
-              }}
+              style={[styles.tabView, byHourView]}
               onPress={() => setActiveTab(1)}>
-              <Text
-                style={{
-                  fontSize: ms(16),
-                  color: COLORS.black,
-                  fontWeight: activeTab === 1 ? '800' : '500',
-                }}>
-                {'By Hour'}
-              </Text>
+              <Text style={[styles.title, byHourText]}>{'By Hour'}</Text>
             </TouchableOpacity>
           </View>
+          <Spacer space={ms(20)} />
+          <OneWayPickDropPoint />
         </View>
       </ImageBackground>
     </ScreenWrapper>
